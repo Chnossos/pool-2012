@@ -1,0 +1,40 @@
+/* *****************************************************************************
+** Write a function that displays the alphabet in lowercase on a single line, in
+** ascending order from the letter 'a'.
+**
+** The function shall be prototyped as follows:
+**
+** int	my_aff_alpha();
+**
+** Additional rule:
+** The function shall return the number of characters printed out.
+** ****************************************************************************/
+
+#include <unistd.h>
+
+int	my_aff_alpha()
+{
+  char	c;
+  int	l;
+
+  l = 0;
+  c = 'a' - 1;
+  while (++c <= 'z')
+    l += write(1, &c, 1);
+  return (l);
+}
+
+int	my_aff_alpha_smart()
+{
+  return (write(1, "abcdefghijklmnopqrstuvwxyz", 26));
+}
+
+#ifndef MY_AFF_ALPHA
+
+int	main()
+{
+  my_aff_alpha();
+  return (0);
+}
+
+#endif /* !MY_AFF_ALPHA */
