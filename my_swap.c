@@ -6,6 +6,8 @@
 ** int	my_swap(int *a, int *b);
 ** ****************************************************************************/
 
+int	my_swap(int *a, int *b);
+
 int	my_swap(int *a, int *b)
 {
   int	tmp;
@@ -15,3 +17,19 @@ int	my_swap(int *a, int *b)
   *a = tmp;
   return (0);
 }
+
+#ifdef MY_SWAP
+
+#include <stdio.h>
+
+int main ()
+{
+  int a = 21, b = 42;
+
+  printf("before\ta = %d, b = %d\n", a, b);
+  my_swap(&a, &b);
+  printf("after\ta = %d, b = %d\n", a, b);
+  return (0);
+}
+
+#endif /* !MY_SWAP_TEST */
