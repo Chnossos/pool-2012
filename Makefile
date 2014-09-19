@@ -1,13 +1,13 @@
-EXE	:=	$(shell ls | grep -v "\." | grep -v $(MAKEFILE_LIST))
+EXE	:=	$(patsubst %.c, %, $(wildcard *.c))
+CC	:=	clang
 
-CFLAGS	:=	-W -Wall -ansi -pedantic
+override CFLAGS	:=	-Weverything
 
 .PHONY: all clean
 
-all:
-	@echo "Usage: make exercise_name (without extension)"
+all: $(EXE)
 
-%:	CPPFLAGS = -D$(shell echo $* | tr a-z A-Z)
+%:	CFLAGS += -D$(shell echo $* | tr a-z A-Z)
 
 clean:
 	@$(RM) $(EXE)
