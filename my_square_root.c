@@ -9,7 +9,9 @@
 ** Your function must give its answer in less than 2 seconds.
 ** ****************************************************************************/
 
-int	my_square_root2(int nb)
+int	my_square_root(int nb);
+
+int	my_square_root(int nb)
 {
   int	root;
   int	tmp;
@@ -23,21 +25,15 @@ int	my_square_root2(int nb)
 
 #ifdef MY_SQUARE_ROOT
 
-#include <math.h>
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Don't forget -lm */
-
-int	main(int ac, char const * const av[])
+int	main()
 {
-  if (ac > 1)
-  {
-    printf("1: %d - 2: %d - 3: %d\n",
-	   my_square_root(atoi(av[1])),
-	   my_square_root2(atoi(av[1])),
-	   (int)sqrt(atoi(av[1])));
-  }
+  assert(my_square_root(4) == 2);
+  assert(my_square_root(3) == 0);
+  puts("Everything is OK");
   return (0);
 }
 

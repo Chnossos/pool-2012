@@ -12,9 +12,11 @@
 
 #include <unistd.h>
 
+int	my_isneg(int n);
+
 int	my_isneg(int n)
 {
-  return (write(1, n < 0 ? "N" : "P", 1));
+  return ((int)write(1, n < 0 ? "N" : "P", 1));
 }
 
 #ifdef MY_ISNEG

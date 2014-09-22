@@ -9,6 +9,8 @@
 ** char	*my_evil_str(char *str);
 ** ****************************************************************************/
 
+char	*my_evil_str(char *str);
+
 char	*my_evil_str(char *str)
 {
   char	letter;
@@ -30,13 +32,16 @@ char	*my_evil_str(char *str)
 
 #ifdef MY_EVIL_STR
 
+#include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 int	main()
 {
   char	test[] = "Hello, World !";
 
-  puts(my_evil_str(test));
+  assert(strcmp(my_evil_str(test), "! dlroW ,olleH") == 0);
+  puts("Everything is OK");
   return (0);
 }
 

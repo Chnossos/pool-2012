@@ -17,6 +17,8 @@
 
 #include <unistd.h>
 
+int my_aff_comb(void);
+
 int	my_aff_comb()
 {
   char	a;

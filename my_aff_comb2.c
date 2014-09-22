@@ -14,6 +14,8 @@
 
 #include "my_putchar.c"
 
+int my_aff_comb2(void);
+
 int	my_aff_comb2()
 {
   int	nb1;

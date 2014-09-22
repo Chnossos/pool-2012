@@ -8,6 +8,8 @@
 ** Your function must give its answer in less than 2 seconds.
 ** ****************************************************************************/
 
+int	my_power_it(int nb, int power);
+
 int	my_power_it(int nb, int power)
 {
   int	result;
@@ -32,7 +34,7 @@ int	main(int ac, char const * const av[])
   if (ac > 2)
     printf("%d\n", my_power_it(atoi(av[1]), atoi(av[2])));
   else
-    printf("%d\n", my_power_it(2, 31) - 1); // Prints INT_MAX value
+    printf("%d\n", my_power_it(2, 31) - 1); /* Prints INT_MAX value */
   return (0);
 }
 

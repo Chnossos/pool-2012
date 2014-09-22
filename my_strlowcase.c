@@ -7,6 +7,8 @@
 ** It shall return str.
 ** ****************************************************************************/
 
+char	*my_strlowcase(char *str);
+
 char	*my_strlowcase(char *str)
 {
   char	*iter;
@@ -22,3 +24,20 @@ char	*my_strlowcase(char *str)
   }
   return (str);
 }
+
+#ifdef MY_STRLOWCASE
+
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
+
+int	main()
+{
+  char	str[] = "Hello, World !";
+
+  assert(strcmp(str, "hello, world !") == 0);
+  puts("Everything is OK");
+  return (0);
+}
+
+#endif /* !MY_STRLOWCASE */

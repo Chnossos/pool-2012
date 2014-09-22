@@ -15,6 +15,8 @@
 ** Your function must give its answer in less than 2 seconds.
 ** ****************************************************************************/
 
+int my_factorielle_it(int nb);
+
 int	my_factorielle_it(int nb)
 {
   int	result;

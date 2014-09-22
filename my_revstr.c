@@ -7,6 +7,8 @@
 ** It shall return str.
 ** ****************************************************************************/
 
+char	*my_revstr(char *str);
+
 char	*my_revstr(char *str)
 {
   char	letter;
@@ -25,3 +27,15 @@ char	*my_revstr(char *str)
   }
   return (str);
 }
+
+#ifdef MY_REVSTR
+
+#include <assert.h>
+#include <stdio.h>
+
+int	main()
+{
+  return (0);
+}
+
+#endif /* !MY_REVSTR */

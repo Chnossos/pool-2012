@@ -8,6 +8,8 @@
 ** It shall return dest.
 ** ****************************************************************************/
 
+char	*my_strcpy(char *dest, char *src);
+
 char	*my_strcpy(char *dest, char *src)
 {
   while (*src)
@@ -15,3 +17,15 @@ char	*my_strcpy(char *dest, char *src)
   *dest = '\0';
   return (dest);
 }
+
+#ifdef MY_STRCPY
+
+#include <assert.h>
+#include <stdio.h>
+
+int	main()
+{
+  return (0);
+}
+
+#endif /* !MY_STRCPY */

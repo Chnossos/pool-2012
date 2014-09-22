@@ -9,6 +9,8 @@
 ** Your function must give its answer in less than 2 seconds.
 ** ****************************************************************************/
 
+int	my_is_prime(int nb);
+
 int	my_is_prime(int nb)
 {
   int	divisor;
@@ -24,3 +26,20 @@ int	my_is_prime(int nb)
   }
   return (1);
 }
+
+#ifdef MY_IS_PRIME
+
+#include <assert.h>
+#include <stdio.h>
+
+int	main()
+{
+  assert(my_is_prime(-1) == 0);
+  assert(my_is_prime(0) == 0);
+  assert(my_is_prime(1) == 0);
+  assert(my_is_prime(2) == 0);
+  puts("Everything is OK");
+  return (0);
+}
+
+#endif /* !MY_IS_PRIME */

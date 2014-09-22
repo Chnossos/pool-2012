@@ -9,6 +9,8 @@
 ** It will give the same answers as the function my_factorielle_it.
 ** ****************************************************************************/
 
+int	my_factorielle_rec(int nb);
+
 int	my_factorielle_rec(int nb)
 {
   if (nb < 0 || nb > 12)

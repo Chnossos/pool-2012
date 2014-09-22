@@ -8,6 +8,8 @@
 ** It will give the same answers as my_power_it.
 ** ****************************************************************************/
 
+int my_power_rec(int nb, int power);
+
 int	my_power_rec(int nb, int power)
 {
   if (power == 1)

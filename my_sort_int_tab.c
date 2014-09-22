@@ -7,6 +7,8 @@
 ** void	my_sort_int_tab(int *tab, int size);
 ** ****************************************************************************/
 
+void	my_sort_int_tab(int *tab, int size);
+
 void	my_sort_int_tab(int *tab, int size)
 {
   int	number;
@@ -36,13 +38,12 @@ void	my_sort_int_tab(int *tab, int size)
 int	main()
 {
   int	tab[] = { -42, 21, 0, 42, -21 };
-  int tab2[] = { -42, -21, 0, 21, 42 };
+  int	tab2[] = { -42, -21, 0, 21, 42 };
   int	i;
 
   my_sort_int_tab(tab, 5);
   for (i = 0 ; i < 5 ; ++i)
     printf("%d%s", tab[i], (i + 1 < 5 ? ", " : "\n"));
-
   my_sort_int_tab(tab2, 5);
   for (i = 0 ; i < 5 ; ++i)
     printf("%d%s", tab2[i], (i + 1 < 5 ? ", " : "\n"));

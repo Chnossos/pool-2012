@@ -15,6 +15,8 @@
 ** "-11000000000000000000000042" returns 0 for the same reason
 ** ****************************************************************************/
 
+int	my_getnbr(char *str);
+
 int	my_getnbr(char *str)
 {
   int	sign;
@@ -24,7 +26,7 @@ int	my_getnbr(char *str)
   sign = 1;
   while (*str && (*str < '0' || *str > '9'))
   {
-    /**/ if (*str == '-')
+    if (*str == '-')
       sign = -sign;
     else if (*str != '+')
       return (0);
@@ -44,21 +46,19 @@ int	my_getnbr(char *str)
 
 #ifdef MY_GETNBR
 
+#include <assert.h>
 #include <stdio.h>
 
-int	main(int ac, char const * const av[])
+int	main()
 {
-  if (ac > 1)
-    printf("%d\n", my_getnbr(av[1]));
-  else
-  {
-    printf("%d\n", my_getnbr("+---+--++---+---+---+-42"));
-    printf("%d\n", my_getnbr("42a43"));
-    printf("%d\n", my_getnbr("11000000000000000000000042"));
-    printf("%d\n", my_getnbr("-1000000000000000000000042"));
-    printf("%d\n", my_getnbr("2147483647"));
-    printf("%d\n", my_getnbr("-2147483648"));
-  }
+  assert(my_getnbr("+---+--++---+---+---+-42") == -42);
+  assert(my_getnbr("42a43") == 42);
+  assert(my_getnbr("11000000000000000000000042") == 0);
+  assert(my_getnbr("-1000000000000000000000042") == 0);
+  assert(my_getnbr("2147483647") == 2147483647);
+  assert(my_getnbr("-2147483648") == -2147483648);
+  assert(my_getnbr("0") == 0);
+  puts("Everything is OK");
   return (0);
 }
 

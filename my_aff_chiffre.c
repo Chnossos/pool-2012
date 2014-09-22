@@ -12,6 +12,8 @@
 
 #include <unistd.h>
 
+int	my_aff_chiffre(void);
+
 int	my_aff_chiffre()
 {
   char	c;
@@ -24,9 +26,11 @@ int	my_aff_chiffre()
   return (l);
 }
 
+int	my_aff_chiffre_smart(void);
+
 int	my_aff_chiffre_smart()
 {
-  return (write(1, "0123456789", 10));
+  return ((int)write(1, "0123456789", 10));
 }
 
 #ifdef MY_AFF_CHIFFRE

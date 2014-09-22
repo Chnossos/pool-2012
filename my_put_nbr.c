@@ -9,9 +9,12 @@
 ** The function shall return the number of characters printed out.
 ** ****************************************************************************/
 
-#include <limits.h>
 #include "my_putchar.c"
 
+int my_put_nbr(int nb);
+
+/* WARNING: This works because the C MODULO operator IS NOT the
+** same as the math MODULO operator. The C one only returns the rest. */
 int	my_put_nbr(int nb)
 {
   int	length;
@@ -24,14 +27,14 @@ int	my_put_nbr(int nb)
     length = my_putchar('-');
     if (nb <= -10)
       length += my_put_nbr(-(nb / 10));
-    /* WARNING: This works because the C MODULO operator IS NOT the
-    ** same as the math MODULO operator. The C one only returns the rest. */
     return (length + my_putchar('0' - nb % 10));
   }
   return (length + my_putchar('0' + nb % 10));
 }
 
 #ifdef MY_PUT_NBR
+
+#include <limits.h>
 
 int	main()
 {

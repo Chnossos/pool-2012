@@ -1,7 +1,7 @@
 EXE	:=	$(patsubst %.c, %, $(wildcard *.c))
 CC	:=	clang
 
-override CFLAGS	:=	-Weverything
+override CFLAGS	:=	-ansi -Weverything
 
 .PHONY: all clean
 

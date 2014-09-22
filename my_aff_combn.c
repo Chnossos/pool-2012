@@ -16,14 +16,16 @@
 #include <stdlib.h>
 #include "my_put_nbr.c"
 
-int	first(int n)
+int my_aff_combn(int n);
+
+static int	first(int n)
 {
   if (n == 1)
     return (0);
   return first(n - 1) * 10 + n - 1;
 }
 
-int	last(int n)
+static int	last(int n)
 {
   int	nbr;
 
@@ -33,7 +35,7 @@ int	last(int n)
   return (nbr);
 }
 
-int	print(int nbr, int n)
+static int	print(int nbr, int n)
 {
   int	count;
   int	tmp;
@@ -52,7 +54,7 @@ int	print(int nbr, int n)
   return (l + my_put_nbr(nbr));
 }
 
-bool	is_valid(int nbr)
+static bool	is_valid(int nbr)
 {
   if (nbr < 10)
     return (true);
@@ -66,7 +68,7 @@ int	my_aff_combn(int n)
   int	l;
 
   l = 0;
-  if (n >= 1 || n <= 10)
+  if (n >= 1 && n <= 10)
   {
     beg = first(n);
     end = last(n);
