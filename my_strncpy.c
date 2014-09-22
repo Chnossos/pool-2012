@@ -13,6 +13,8 @@
 ** It shall return dest.
 ** ****************************************************************************/
 
+char	*my_strncpy(char *dest, char *src, int n);
+
 char	*my_strncpy(char *dest, char *src, int n)
 {
   while (n --> 0 && *src)
@@ -21,3 +23,14 @@ char	*my_strncpy(char *dest, char *src, int n)
     *dest = '\0';
   return (dest);
 }
+
+#ifdef MY_STRNCPY
+
+#include <stdio.h>
+
+int main()
+{
+
+}
+
+#endif

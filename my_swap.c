@@ -20,16 +20,20 @@ int	my_swap(int *a, int *b)
 
 #ifdef MY_SWAP
 
+#include <assert.h>
 #include <stdio.h>
 
-int main ()
+int	main()
 {
-  int a = 21, b = 42;
+  int	a;
+  int	b;
 
-  printf("before\ta = %d, b = %d\n", a, b);
+  a = 42;
+  b = 21;
   my_swap(&a, &b);
-  printf("after\ta = %d, b = %d\n", a, b);
+  assert(a == 21 && b == 42);
+  puts("Everything is OK");
   return (0);
 }
 
-#endif /* !MY_SWAP_TEST */
+#endif /* !MY_SWAP */

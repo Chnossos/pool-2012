@@ -5,6 +5,8 @@
 ** char	*my_strstr(char *str, char *to_find);
 ** ****************************************************************************/
 
+char	*my_strstr(char *str, char *to_find);
+
 char	*my_strstr(char *str, char *to_find)
 {
   int	i;
@@ -25,3 +27,20 @@ char	*my_strstr(char *str, char *to_find)
   }
   return (0);
 }
+
+#ifdef MY_STRSTR
+
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
+
+int	main()
+{
+  char	*str = "Hello, World !";
+  char	*test1 = str;
+
+  assert(my_strstr(str, test1) == strstr(str, test1));
+  puts("Everything is OK");
+}
+
+#endif /* !MY_STRSTR */

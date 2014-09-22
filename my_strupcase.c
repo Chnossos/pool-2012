@@ -7,6 +7,8 @@
 ** It shall return str.
 ** ****************************************************************************/
 
+char	*my_strupcase(char *str);
+
 char	*my_strupcase(char *str)
 {
   char	*iter;
@@ -22,3 +24,19 @@ char	*my_strupcase(char *str)
   }
   return (str);
 }
+
+#ifdef MY_STRUPCASE
+
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
+
+int	main()
+{
+  char	str[] = "Hello, World !";
+  assert(strcmp("HELLO, WORLD !", my_strupcase(str)) == 0);
+  puts("Everything is OK");
+  return (0);
+}
+
+#endif /* !MY_STRUPCASE */

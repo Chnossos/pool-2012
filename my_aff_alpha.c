@@ -12,6 +12,8 @@
 
 #include <unistd.h>
 
+int	my_aff_alpha(void);
+
 int	my_aff_alpha()
 {
   char	c;
@@ -24,12 +26,14 @@ int	my_aff_alpha()
   return (l);
 }
 
+int	my_aff_alpha_smart(void);
+
 int	my_aff_alpha_smart()
 {
-  return (write(1, "abcdefghijklmnopqrstuvwxyz", 26));
+  return ((int)write(1, "abcdefghijklmnopqrstuvwxyz", 26));
 }
 
-#ifndef MY_AFF_ALPHA
+#ifdef MY_AFF_ALPHA
 
 int	main()
 {
