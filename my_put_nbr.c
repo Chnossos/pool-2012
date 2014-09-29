@@ -11,10 +11,10 @@
 
 #include "my_putchar.c"
 
-int my_put_nbr(int nb);
+int	my_put_nbr(int nb);
 
 /* WARNING: This works because the C MODULO operator IS NOT the
-** same as the math MODULO operator. The C one only returns the rest. */
+** same as the math MODULO operator. The C one is the remainder operator. */
 int	my_put_nbr(int nb)
 {
   int	length;
