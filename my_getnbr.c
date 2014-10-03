@@ -20,26 +20,20 @@ int	my_getnbr(char *str);
 int	my_getnbr(char *str)
 {
   int	sign;
-  int	prev;
   int	nbr;
 
   sign = 1;
-  while (*str && (*str < '0' || *str > '9'))
+  while (*str == '+' || *str == '-')
   {
-    if (*str == '-')
+    if (*str++ == '-')
       sign = -sign;
-    else if (*str != '+')
-      return (0);
-    ++str;
   }
   nbr = 0;
   while (*str >= '0' && *str <= '9')
   {
-    prev = nbr;
-    nbr = nbr * 10 + sign * (*str - '0');
-    if ((prev > 0 && nbr < 0) || (prev < 0 && nbr > 0))
+    if ((nbr * 10 + sign * (*str - '0')) / 10 != nbr)
       return (0);
-    ++str;
+    nbr = nbr * 10 + sign * (*str++ - '0');
   }
   return (nbr);
 }
