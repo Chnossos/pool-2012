@@ -3,8 +3,6 @@ CC	:=	clang
 
 override CFLAGS	+=	-ansi -Weverything
 
-$(info $(CFLAGS))
-
 .PHONY: all clean
 
 all: $(EXE)
