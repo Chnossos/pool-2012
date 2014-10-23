@@ -1,9 +1,15 @@
 EXE	:=	$(patsubst %.c, %, $(wildcard *.c))
 CC	:=	clang
 
-override CFLAGS	+=	-ansi -Weverything
+ifeq ($(OS),Windows_NT)
+EXE	:=	$(EXE:%=%.exe)
+endif
 
-$(info $(CFLAGS))
+ifeq ($(CC),clang)
+override CFLAGS	+=	-ansi -Weverything
+else
+override CFLAGS	+=	-ansi -pedantic -W -Wall
+endif
 
 .PHONY: all clean
 
