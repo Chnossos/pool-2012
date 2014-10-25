@@ -1,8 +1,9 @@
 EXE	:=	$(patsubst %.c, %, $(wildcard *.c))
-CC	:=	clang
 
 ifeq ($(OS),Windows_NT)
 EXE	:=	$(EXE:%=%.exe)
+else
+CC	:=	clang
 endif
 
 ifeq ($(CC),clang)
