@@ -44,21 +44,23 @@ char	**my_str_to_wordtab(char *str)
   char	**tab;
   int	i;
 
-  tab = malloc((size_t)(count_words(str) + 1) * sizeof(char *));
-  i = 0;
-  while (*str)
+  if ((tab = malloc((size_t)(count_words(str) + 1) * sizeof(char *))))
   {
-    while (*str && !my_isalnum(*str))
-      ++str;
-    if (!*str)
-      break;
-    tab[i++] = str;
-    while (my_isalnum(*str))
-      ++str;
-    if (*str)
-      *str++ = '\0';
+    i = 0;
+    while (*str)
+    {
+      while (*str && !my_isalnum(*str))
+	++str;
+      if (!*str)
+	break;
+      tab[i++] = str;
+      while (my_isalnum(*str))
+	++str;
+      if (*str)
+	*str++ = '\0';
+    }
+    tab[i] = NULL;
   }
-  tab[i] = NULL;
   return (tab);
 }
 
