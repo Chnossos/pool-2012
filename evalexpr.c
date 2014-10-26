@@ -1,12 +1,12 @@
 #include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "my_getnbr.c"
+#include "my_put_nbr.c"
 
 static int	calculate(char operator, int nb1, int nb2)
 {
-  static int	(*operations[5])(int, int);
   static bool	initialized = false;
   static char	const * const operators = "+-*/%";
+  static int	(*operations[5])(int, int);
   int		i;
 
   if (!initialized)
@@ -24,7 +24,7 @@ static int	calculate(char operator, int nb1, int nb2)
   return (operations[i](nb1, nb2));
 }
 
-static char	*get_matching_parenthesis(char *expr)
+static int	get_matching_parenthesis(char *expr)
 {
   int		lvl;
   int		i;
@@ -38,7 +38,7 @@ static char	*get_matching_parenthesis(char *expr)
     else if (expr[i] == ')')
       --lvl;
   }
-  return (expr + i);
+  return (i);
 }
 
 static char	*find_next_operator(char *expr)
@@ -53,7 +53,7 @@ static char	*find_next_operator(char *expr)
     if (expr[i] == '+' || expr[i] == '-')
       operator = expr + i;
     else if (expr[i] == '(')
-      i += get_matching_parenthesis(expr) - expr - 1;
+      i = get_matching_parenthesis(expr + i);
   }
   if (operator)
     return (operator);
@@ -63,7 +63,7 @@ static char	*find_next_operator(char *expr)
     if (expr[i] == '*' || expr[i] == '/' || expr[i] == '%')
       return (expr + i);
     else if (expr[i] == '(')
-      i += get_matching_parenthesis(expr) - expr - 1;
+      i = get_matching_parenthesis(expr + i);
   }
   return (NULL);
 }
@@ -79,10 +79,10 @@ static int	evalexpr(char *expr)
   {
     if (*expr == '(')
     {
-      *get_matching_parenthesis(expr) = '\0';
+      expr[get_matching_parenthesis(expr)] = '\0';
       return (evalexpr(++expr));
     }
-    return (atoi(expr));
+    return (my_getnbr(expr));
   }
   else
   {
@@ -92,8 +92,12 @@ static int	evalexpr(char *expr)
   }
 }
 
-int	main(int ac __attribute__((unused)), char *av[])
+int	main(int ac, char *av[])
 {
-  printf("%d\n", evalexpr(av[1]));
+  if (ac > 1)
+  {
+    my_put_nbr(evalexpr(av[1]));
+    my_putchar('\n');
+  }
   return (0);
 }
