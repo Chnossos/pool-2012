@@ -1,18 +1,27 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 static int	calculate(char operator, int nb1, int nb2)
 {
-  if (operator == '+')
-    return (nb1 + nb2);
-  else if (operator == '-')
-    return (nb1 - nb2);
-  else if (operator == '*')
-    return (nb1 * nb2);
-  else if (operator == '/')
-    return (nb1 / nb2);
-  else
-    return (nb1 % nb2);
+  static int	(*operations[5])(int, int);
+  static bool	initialized = false;
+  static char	const * const operators = "+-*/%";
+  int		i;
+
+  if (!initialized)
+  {
+    operations[0] = ({ int f(int n1, int n2) { return (n1 + n2); } &f; });
+    operations[1] = ({ int f(int n1, int n2) { return (n1 - n2); } &f; });
+    operations[2] = ({ int f(int n1, int n2) { return (n1 * n2); } &f; });
+    operations[3] = ({ int f(int n1, int n2) { return (n1 / n2); } &f; });
+    operations[4] = ({ int f(int n1, int n2) { return (n1 % n2); } &f; });
+    initialized = true;
+  }
+  i = 0;
+  while (operators[i] && operators[i] != operator)
+    ++i;
+  return (operations[i](nb1, nb2));
 }
 
 static char	*get_matching_parenthesis(char *expr)
