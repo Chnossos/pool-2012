@@ -7,9 +7,9 @@ CC	:=	clang
 endif
 
 ifeq ($(CC),clang)
-override CFLAGS	+=	-ansi -pedantic -W -Wall
+override CFLAGS	+=	-ansi -Weverything
 else
-override CFLAGS	+=	-ansi -pedantic -Weverything
+override CFLAGS	+=	-ansi -pedantic -W -Wall
 endif
 
 .PHONY: all clean
