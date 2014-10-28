@@ -30,14 +30,14 @@ static void	cat(int fd)
   while ((size = read(fd, buffer, 30720)) > 0)
     write(1, buffer, size);
   if (size < 0)
-    {
-      if (errno == EACCES)
-	write(2, "Permission denied\n", 18);
-      else if (errno == EISDIR)
-	write(2, "Is a directory\n", 15);
-      else if (errno == ENOENT)
-	write(2, "No such file or directory\n", 26);
-    }
+  {
+    if (errno == EACCES)
+      write(2, "Permission denied\n", 18);
+    else if (errno == EISDIR)
+      write(2, "Is a directory\n", 15);
+    else if (errno == ENOENT)
+      write(2, "No such file or directory\n", 26);
+  }
   close(fd);
 }
 
@@ -48,10 +48,10 @@ int	main(int ac, char const * const av[])
   if (ac == 1)
     cat(0);
   else
-    {
-      i = 0;
-      while (++i < ac)
-	cat(open(av[i], O_RDONLY));
-    }
+  {
+    i = 0;
+    while (++i < ac)
+      cat(open(av[i], O_RDONLY));
+  }
   return (0);
 }
