@@ -1,28 +1,49 @@
-#include <stdbool.h>
 #include "my_getnbr.c"
 #include "my_put_nbr.c"
+
+#if defined(__GNUC__) && !defined(__clang__)
+
+#include <stdbool.h>
 
 static int	calculate(char operator, int nb1, int nb2)
 {
   static bool	initialized = false;
   static char	const * const operators = "+-*/%";
-  static int	(*operations[5])(int, int);
+  static int	(*ops[5])(int, int);
   int		i;
 
   if (!initialized)
   {
-    operations[0] = ({ int f(int n1, int n2) { return (n1 + n2); } &f; });
-    operations[1] = ({ int f(int n1, int n2) { return (n1 - n2); } &f; });
-    operations[2] = ({ int f(int n1, int n2) { return (n1 * n2); } &f; });
-    operations[3] = ({ int f(int n1, int n2) { return (n1 / n2); } &f; });
-    operations[4] = ({ int f(int n1, int n2) { return (n1 % n2); } &f; });
+    ops[0] = __extension__({ int f(int n1, int n2) { return (n1 + n2); } &f; });
+    ops[1] = __extension__({ int f(int n1, int n2) { return (n1 - n2); } &f; });
+    ops[2] = __extension__({ int f(int n1, int n2) { return (n1 * n2); } &f; });
+    ops[3] = __extension__({ int f(int n1, int n2) { return (n1 / n2); } &f; });
+    ops[4] = __extension__({ int f(int n1, int n2) { return (n1 % n2); } &f; });
     initialized = true;
   }
   i = 0;
   while (operators[i] && operators[i] != operator)
     ++i;
-  return (operations[i](nb1, nb2));
+  return (ops[i](nb1, nb2));
 }
+
+#else
+
+static int	calculate(char operator, int nb1, int nb2)
+{
+  if (operator == '+')
+    return (nb1 + nb2);
+  else if (operator == '-')
+    return (nb1 - nb2);
+  else if (operator == '*')
+    return (nb1 * nb2);
+  else if (operator == '/')
+    return (nb1 / nb2);
+  else
+    return (nb1 % nb2);
+}
+
+#endif
 
 static int	get_matching_parenthesis(char *expr)
 {
