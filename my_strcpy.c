@@ -30,7 +30,7 @@ char	*my_strcpy(char *dest, char *src)
 
 int	main()
 {
-  // TODO: Write some tests
+  /* TODO: Write some tests */
   return (0);
 }
 
