@@ -28,7 +28,7 @@ static void	cat(int fd)
   char		buffer[30720];
 
   while ((size = read(fd, buffer, 30720)) > 0)
-    write(1, buffer, size);
+    write(1, buffer, (size_t)size);
   if (size < 0)
   {
     if (errno == EACCES)
