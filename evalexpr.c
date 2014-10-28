@@ -1,3 +1,30 @@
+/* *****************************************************************************
+** The purpose is to write the eval_expr function.
+**
+** It must be prototyped like this:
+** int  eval_expr(char *str);
+**
+** This function takes a character string as parameter that represents an
+** arethmetical expression. Example: "3 + 42 * (1 - 2 / (3 + 4) - 1 % 21) + 1"
+**
+** This expression will have to be calculated, and the result returned as return
+** value by the function.
+**
+** The string that you will receive will be valid (no bugs, no bad address, no
+** letter nor syntax error, no division by zero...).
+**
+** The 5 operators must be supported:
+**   + for addition
+**   - for substraction
+**   * for multiplication
+**   / for division
+**   % for modulo
+**
+** The functions also has to handle any number of parenthesises.
+*
+** Additional rule: Expressions like "-1" or "--2" or "4+-+-5" must be handled.
+** ****************************************************************************/
+
 #include "my_getnbr.c"
 #include "my_put_nbr.c"
 
@@ -91,30 +118,30 @@ static char	*find_next_operator(char *expr)
   return (op);
 }
 
-static int	evalexpr(char *expr)
+static int	eval_expr(char *expr)
 {
-  char		*operator_loc;
-  char		operator;
+  char		*op_location;
+  char		op;
 
   if (*expr == ' ')
-    return (evalexpr(expr + 1));
-  if (!(operator_loc = find_next_operator(expr)))
+    return (eval_expr(expr + 1));
+  if (!(op_location = find_next_operator(expr)))
   {
     if (*expr == '(')
     {
       expr[get_matching_parenthesis(expr)] = '\0';
-      return (evalexpr(++expr));
+      return (eval_expr(++expr));
     }
     return (my_getnbr(expr));
   }
   else
   {
-    operator = *operator_loc;
-    *operator_loc = '\0';
-    if (operator_loc == expr)
-      return (calculate(operator, evalexpr(expr), my_getnbr(operator_loc + 1)));
+    op = *op_location;
+    *op_location = '\0';
+    if (op_location == expr)
+      return (calculate(op, eval_expr(expr), my_getnbr(op_location + 1)));
     else
-      return (calculate(operator, evalexpr(expr), evalexpr(operator_loc + 1)));
+      return (calculate(op, eval_expr(expr), eval_expr(op_location + 1)));
   }
 }
 
@@ -122,7 +149,7 @@ int	main(int ac, char *av[])
 {
   if (ac > 1)
   {
-    my_put_nbr(evalexpr(av[1]));
+    my_put_nbr(eval_expr(av[1]));
     my_putchar('\n');
   }
   return (0);
