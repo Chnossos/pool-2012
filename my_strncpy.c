@@ -17,20 +17,24 @@ char	*my_strncpy(char *dest, char *src, int n);
 
 char	*my_strncpy(char *dest, char *src, int n)
 {
-  while (n --> 0 && *src)
-    *dest++ = *src++;
-  if (n)
-    *dest = '\0';
+  char	*iter;
+
+  if ((iter = dest))
+  {
+    while (n --> 0 && *src)
+      *iter++ = *src++;
+    if (n)
+      *iter = '\0';
+  }
   return (dest);
 }
 
 #ifdef MY_STRNCPY
 
-#include <stdio.h>
-
 int main()
 {
-
+  /* TODO: Write some tests */
+  return (0);
 }
 
-#endif
+#endif /* !MY_STRNCPY */

@@ -12,9 +12,14 @@ char	*my_strcpy(char *dest, char *src);
 
 char	*my_strcpy(char *dest, char *src)
 {
-  while (*src)
-    *dest++ = *src++;
-  *dest = '\0';
+  char	*iter;
+
+  if ((iter = dest))
+  {
+    while (*src)
+      *iter++ = *src++;
+    *iter = '\0';
+  }
   return (dest);
 }
 
@@ -25,6 +30,7 @@ char	*my_strcpy(char *dest, char *src)
 
 int	main()
 {
+  // TODO: Write some tests
   return (0);
 }
 
