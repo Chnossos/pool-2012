@@ -70,23 +70,25 @@ static char	*find_next_operator(char *expr)
   op = NULL;
   i = -1;
   while (expr[++i])
+  {
     if (expr[i] == '+' || expr[i] == '-')
       op = expr + i;
     else if (expr[i] == '(')
-      i = get_matching_parenthesis(expr + i);
+      i += get_matching_parenthesis(expr + i);
+  }
   if (op)
-  {
     while (op > expr && (*(op - 1) == '+' || *(op - 1) == '-'))
       --op;
-    return (op);
+  else
+  {
+    i = -1;
+    while (expr[++i] && !op)
+      if (expr[i] == '*' || expr[i] == '/' || expr[i] == '%')
+	op = expr + i;
+      else if (expr[i] == '(')
+	i += get_matching_parenthesis(expr + i);
   }
-  i = -1;
-  while (expr[++i])
-    if (expr[i] == '*' || expr[i] == '/' || expr[i] == '%')
-      return (expr + i);
-    else if (expr[i] == '(')
-      i = get_matching_parenthesis(expr + i);
-  return (NULL);
+  return (op);
 }
 
 static int	evalexpr(char *expr)
