@@ -103,46 +103,44 @@ static char	*find_next_operator(char *expr)
     else if (expr[i] == '(')
       i += get_matching_parenthesis(expr + i);
   }
-  if (op)
-    while (op > expr && (*(op - 1) == '+' || *(op - 1) == '-'))
-      --op;
-  else
+  i = -1;
+  while (!op && expr[++i])
   {
-    i = -1;
-    while (expr[++i] && !op)
-      if (expr[i] == '*' || expr[i] == '/' || expr[i] == '%')
-	op = expr + i;
-      else if (expr[i] == '(')
-	i += get_matching_parenthesis(expr + i);
+    if (expr[i] == '*' || expr[i] == '/' || expr[i] == '%')
+      op = expr + i;
+    else if (expr[i] == '(')
+      i += get_matching_parenthesis(expr + i);
   }
   return (op);
 }
 
 static int	eval_expr(char *expr)
 {
-  char		*op_location;
+  char		*op_loc;
   char		op;
 
-  if (*expr == ' ')
-    return (eval_expr(expr + 1));
-  if (!(op_location = find_next_operator(expr)))
+  while (*expr == ' ')
+    ++expr;
+  if (!(op_loc = find_next_operator(expr)) && *expr == '(')
   {
-    if (*expr == '(')
-    {
       expr[get_matching_parenthesis(expr)] = '\0';
       return (eval_expr(++expr));
-    }
-    return (my_getnbr(expr));
   }
-  else
+  else if (op_loc)
   {
-    op = *op_location;
-    *op_location = '\0';
-    if (op_location == expr)
-      return (calculate(op, eval_expr(expr), my_getnbr(op_location + 1)));
-    else
-      return (calculate(op, eval_expr(expr), eval_expr(op_location + 1)));
+    while (op_loc > expr &&
+	   (*(op_loc - 1) == '+' || *(op_loc - 1) == '-' || *(op_loc - 1) == ' '))
+      --op_loc;
+    while (*op_loc == ' ')
+      ++op_loc;
+    if (op_loc != expr)
+    {
+      op = *op_loc;
+      *op_loc = '\0';
+      return (calculate(op, eval_expr(expr), eval_expr(op_loc + 1)));
+    }
   }
+  return (my_getnbr(expr));
 }
 
 int	main(int ac, char *av[])
