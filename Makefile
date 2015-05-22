@@ -18,5 +18,11 @@ all: $(EXE)
 
 %: CFLAGS += -D$(shell echo $* | tr a-z A-Z)
 
+# Thank you stupid MinGW-Make ...
+ifeq ($(OS),Windows_NT)
+%: %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS) -o $@
+endif
+
 clean:
 	@$(RM) $(EXE)

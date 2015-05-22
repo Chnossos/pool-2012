@@ -21,23 +21,55 @@
 **   % for modulo
 **
 ** The functions also has to handle any number of parenthesises.
-*
-** Additional rule: Expressions like "-1" or "--2" or "4+-+-5" must be handled.
+**
+** Additional rules (added as a challenge by myself):
+** 	- Expressions like "-1" or "--2" or "4+-+-5" must be handled.
+** 	- Any amount of spaces around operands must be handled.
 ** ****************************************************************************/
 
 #include "my_getnbr.c"
-#include "my_put_nbr.c"
 
-#if defined(__GNUC__) && !defined(__clang__)
+/* No need to include the whole <stdlib.h> just for this ... */
+#ifndef NULL
+# define NULL (void *)0
+#endif
+
+#if !defined(__GNUC__) || defined(__clang__)
+
+/* Basic version with a classic repeated if-else construction, no fun ... */
+
+static int	calculate(char op, int nb1, int nb2)
+{
+  if (op == '+')
+    return (nb1 + nb2);
+  else if (op == '-')
+    return (nb1 - nb2);
+  else if (op == '*')
+    return (nb1 * nb2);
+  else if (op == '/')
+    return (nb1 / nb2);
+  else
+    return (nb1 % nb2);
+}
+
+#else
+
+/* *****************************************************************************
+** Toying with GCC "lambda" extension :P
+** Does that still count as less than 5 functions in the same file ? Dunno.
+** Sadly, the address of these lambda functions are not constant, so we cannot
+** initialize the function pointer array at declaration, thus a fallback to a
+** classic static boolean flag.
+** ****************************************************************************/
 
 #include <stdbool.h>
 
-static int	calculate(char operator, int nb1, int nb2)
+static int			calculate(char op, int nb1, int nb2)
 {
-  static bool	initialized = false;
-  static char	const * const operators = "+-*/%";
-  static int	(*ops[5])(int, int);
-  int		i;
+  static char const * const	operators = "+-*/%";
+  static bool			initialized = false;
+  static int			(*ops[5])(int, int);
+  int				i;
 
   if (!initialized)
   {
@@ -49,29 +81,27 @@ static int	calculate(char operator, int nb1, int nb2)
     initialized = true;
   }
   i = 0;
-  while (operators[i] && operators[i] != operator)
+  while (operators[i] && operators[i] != op)
     ++i;
   return (ops[i](nb1, nb2));
 }
 
-#else
-
-static int	calculate(char operator, int nb1, int nb2)
-{
-  if (operator == '+')
-    return (nb1 + nb2);
-  else if (operator == '-')
-    return (nb1 - nb2);
-  else if (operator == '*')
-    return (nb1 * nb2);
-  else if (operator == '/')
-    return (nb1 / nb2);
-  else
-    return (nb1 % nb2);
-}
-
 #endif
 
+/**
+ * Takes a valid expression beginning with an opening parenthesis and returns
+ * the index of its matching closing parenthesis.
+ *
+ * Any sub-level of matching parentheses is ignored.
+ *
+ * (1 * (2 + 3) * 2)
+ * ^---------------^
+ *
+ * @param expr
+ * 	The string containing the expression to be parsed.
+ * @return
+ * 	The index of the closing parenthesis matching the first parenthesis.
+ */
 static int	get_matching_parenthesis(char *expr)
 {
   int		lvl;
@@ -89,6 +119,20 @@ static int	get_matching_parenthesis(char *expr)
   return (i);
 }
 
+/**
+ * Finds the next splitting point of the expression.
+ *
+ * First looks for the last + or - operator, skipping any sub-expression
+ * surrounded by matching paentheses. If no such operator is found, then looks
+ * for the first *, / or % operator. If no operator is found at all, returns
+ * @c NULL.
+ *
+ * @param expr
+ * 	The string containing the expression to be parsed.
+ * @return
+ * 	A pointer to the splitting point in the expression, or NULL if none is
+ * 	found.
+ */
 static char	*find_next_operator(char *expr)
 {
   char		*op;
@@ -98,22 +142,48 @@ static char	*find_next_operator(char *expr)
   i = -1;
   while (expr[++i])
   {
-    if (expr[i] == '+' || expr[i] == '-')
-      op = expr + i;
-    else if (expr[i] == '(')
+    if (expr[i] == '(')
       i += get_matching_parenthesis(expr + i);
+    else if (expr[i] == '+' || expr[i] == '-')
+      op = expr + i;
   }
   i = -1;
   while (!op && expr[++i])
   {
-    if (expr[i] == '*' || expr[i] == '/' || expr[i] == '%')
-      op = expr + i;
-    else if (expr[i] == '(')
+    if (expr[i] == '(')
       i += get_matching_parenthesis(expr + i);
+    else if (expr[i] == '*' || expr[i] == '/' || expr[i] == '%')
+      op = expr + i;
   }
   return (op);
 }
 
+/**
+ * Evaluates a valid mathematical expression recursively and returns the result.
+ *
+ * First tries to find a top-level operator in order to split the expression.
+ * A top-level operator is an operator that is outside of any expression
+ * surrounded by matching parentheses.
+ *
+ * If such an operator cannot be found, and the expression begins with an
+ * opening parenthesis (all spaces are skipped in the parsing process), then
+ * removes the parentheses and start a new evaluation with the sub-expression.
+ *
+ * If no parenthesis is found, then the whole expression is actually a number.
+ *
+ * If a + or - operator has been found, we check there is more right before it
+ * to handle expressions such as "-+-2" or "1 * --2", and the process continue
+ * as described below with other operators.
+ *
+ * If a *, / or % operator has been found, it is removed and an evaluation of
+ * the two surrounding expressions begin, whose results are used as operands to
+ * the calculation with the previously found operator.
+ *
+ * @param expr
+ * 	The string containing the expression to be parsed.
+ * @return
+ * 	The result of the evaluation.
+ */
 static int	eval_expr(char *expr)
 {
   char		*op_loc;
@@ -123,17 +193,17 @@ static int	eval_expr(char *expr)
     ++expr;
   if (!(op_loc = find_next_operator(expr)) && *expr == '(')
   {
-      expr[get_matching_parenthesis(expr)] = '\0';
-      return (eval_expr(++expr));
+    expr[get_matching_parenthesis(expr)] = '\0';
+    return (eval_expr(++expr));
   }
   else if (op_loc)
   {
-    while (op_loc > expr &&
-	   (*(op_loc - 1) == '+' || *(op_loc - 1) == '-' || *(op_loc - 1) == ' '))
+    while (op_loc > expr && (*(op_loc - 1) == '+' ||
+			     *(op_loc - 1) == '-' || *(op_loc - 1) == ' '))
       --op_loc;
     while (*op_loc == ' ')
       ++op_loc;
-    if (op_loc != expr)
+    if (op_loc > expr)
     {
       op = *op_loc;
       *op_loc = '\0';
@@ -142,6 +212,10 @@ static int	eval_expr(char *expr)
   }
   return (my_getnbr(expr));
 }
+
+#ifdef EVALEXPR
+
+#include "my_put_nbr.c"
 
 int	main(int ac, char *av[])
 {
@@ -152,3 +226,5 @@ int	main(int ac, char *av[])
   }
   return (0);
 }
+
+#endif /* !EVALEXPR */
