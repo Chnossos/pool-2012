@@ -39,7 +39,7 @@ bool	my_isalnum(char c)
 
 int	main()
 {
-  assert(my_isdigit('0') == isdigit('0'));
+  assert(!!my_isdigit('0') == !!isdigit('0'));
   puts("Everything is OK");
   return (0);
 }

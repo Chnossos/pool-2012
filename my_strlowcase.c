@@ -18,7 +18,7 @@ char	*my_strlowcase(char *str)
     while (*iter)
     {
       if (*iter >= 'A' && *iter <= 'Z')
-	*iter += ('a' - 'A');
+        *iter += ('a' - 'A');
       ++iter;
     }
   }
@@ -35,7 +35,7 @@ int	main()
 {
   char	str[] = "Hello, World !";
 
-  assert(strcmp(str, "hello, world !") == 0);
+  assert(strcmp(my_strlowcase(str), "hello, world !") == 0);
   puts("Everything is OK");
   return (0);
 }

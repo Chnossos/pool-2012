@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 project(pool-2012 LANGUAGES C)
+enable_testing()
 
 function(add_my_executable SOURCE)
     get_filename_component(TARGET ${SOURCE} NAME_WE)
@@ -11,8 +12,9 @@ function(add_my_executable SOURCE)
     elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
         target_compile_options(${TARGET}
             PRIVATE
-                $<$<NOT:$<STREQUAL:${CMAKE_C_SIMULATE_ID},MSVC>>:-ansi -pedantic-errors>
-                -Weverything -Wno-deprecated-declarations
+                -Weverything
+                $<IF:$<STREQUAL:${CMAKE_C_SIMULATE_ID},MSVC>,-Wno-deprecated-declarations
+                                                            ,-ansi -pedantic-errors>
         )
     elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
         target_compile_options(${TARGET}
@@ -20,6 +22,9 @@ function(add_my_executable SOURCE)
                 /wd4146 # negative unsigned still unsigned
                 /wd4996 # write, read, ... not POSIX
         )
+    endif()
+    if(NOT "${TARGET}" STREQUAL "cat")
+        add_test(NAME ${TARGET} COMMAND ${TARGET})
     endif()
 endfunction()
 

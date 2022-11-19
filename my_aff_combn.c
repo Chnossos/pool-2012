@@ -77,8 +77,8 @@ int	my_aff_combn(int n)
     {
       if (is_valid(beg))
       {
-	l += write(1, ", ", 2);
-	l += print(beg, n);
+        l += write(1, ", ", 2);
+        l += print(beg, n);
       }
     }
   }
@@ -91,7 +91,7 @@ int	main(int ac, char const * const av[])
 {
   if (ac > 1)
     return (my_aff_combn(atoi(av[1])));
-  return (1);
+  return (0);
 }
 
 #endif /* !MY_AFF_COMBN */

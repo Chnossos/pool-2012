@@ -102,7 +102,7 @@ static int			calculate(char op, int nb1, int nb2)
  * @return
  * 	The index of the closing parenthesis matching the first parenthesis.
  */
-static int	get_matching_parenthesis(char *expr)
+static int	get_matching_parenthesis(char const *expr)
 {
   int		lvl;
   int		i;
@@ -144,15 +144,8 @@ static char	*find_next_operator(char *expr)
   {
     if (expr[i] == '(')
       i += get_matching_parenthesis(expr + i);
-    else if (expr[i] == '+' || expr[i] == '-')
-      op = expr + i;
-  }
-  i = -1;
-  while (!op && expr[++i])
-  {
-    if (expr[i] == '(')
-      i += get_matching_parenthesis(expr + i);
-    else if (expr[i] == '*' || expr[i] == '/' || expr[i] == '%')
+    else if (expr[i] == '+' || expr[i] == '-' ||
+             (!op && (expr[i] == '*' || expr[i] == '/' || expr[i] == '%')))
       op = expr + i;
   }
   return (op);
@@ -191,15 +184,10 @@ static int	eval_expr(char *expr)
 
   while (*expr == ' ')
     ++expr;
-  if (!(op_loc = find_next_operator(expr)) && *expr == '(')
-  {
-    expr[get_matching_parenthesis(expr)] = '\0';
-    return (eval_expr(++expr));
-  }
-  else if (op_loc)
+  if ((op_loc = find_next_operator(expr)))
   {
     while (op_loc > expr && (*(op_loc - 1) == '+' ||
-			     *(op_loc - 1) == '-' || *(op_loc - 1) == ' '))
+                             *(op_loc - 1) == '-' || *(op_loc - 1) == ' '))
       --op_loc;
     while (*op_loc == ' ')
       ++op_loc;
@@ -209,6 +197,11 @@ static int	eval_expr(char *expr)
       *op_loc = '\0';
       return (calculate(op, eval_expr(expr), eval_expr(op_loc + 1)));
     }
+  }
+  else if (*expr == '(')
+  {
+    expr[get_matching_parenthesis(expr)] = '\0';
+    return (eval_expr(++expr));
   }
   return (my_getnbr(expr));
 }
