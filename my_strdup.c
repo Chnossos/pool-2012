@@ -29,10 +29,11 @@ char	*my_strdup(char *str)
 #include <stdio.h>
 #include <string.h>
 
-int	main(int ac __attribute__((unused)), char *av[])
+int	main(int ac, char *av[])
 {
   char	*dup;
 
+  (void)ac;
   if ((dup = my_strdup(av[0])))
   {
     assert(strcmp(dup, av[0]) == 0);

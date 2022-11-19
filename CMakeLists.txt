@@ -14,6 +14,12 @@ function(add_my_executable SOURCE)
                 $<$<NOT:$<STREQUAL:${CMAKE_C_SIMULATE_ID},MSVC>>:-ansi -pedantic-errors>
                 -Weverything -Wno-deprecated-declarations
         )
+    elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
+        target_compile_options(${TARGET}
+            PRIVATE
+                /wd4146 # negative unsigned still unsigned
+                /wd4996 # write, read, ... not POSIX
+        )
     endif()
 endfunction()
 

@@ -68,14 +68,19 @@ char	**my_str_to_wordtab(char *str)
 
 #include <stdio.h>
 
-int	main(int ac __attribute__((unused)), char *av[])
+int	main(int ac, char *av[])
 {
-  char	**tab = my_str_to_wordtab(av[1]);
-  int	i = 0;
+  char	**tab;
+  int	i;
 
-  while (tab[i])
-    printf("%s\n", tab[i++]);
-  free(tab);
+  if (ac > 1)
+  {
+      i = 0;
+      tab = my_str_to_wordtab(av[1]);
+      while (tab[i])
+          printf("%s\n", tab[i++]);
+      free(tab);
+  }
   return (0);
 }
 
