@@ -11,7 +11,13 @@
 ** The function shall return the number of characters printed out.
 ** ****************************************************************************/
 
-#include <unistd.h>
+#ifdef _WIN32
+# include <io.h>
+# define WRITE_SIZE unsigned int
+#else
+# include <unistd.h>
+# WRITE_SIZE size_t
+#endif
 
 int	my_putstr(char *str);
 
@@ -24,7 +30,7 @@ int	my_putstr(char *str)
     while (*iter)
       ++iter;
   }
-  return (str ? (int)write(1, str, (size_t)(iter - str)) : 0);
+  return (str ? (int)write(1, str, (WRITE_SIZE)(iter - str)) : 0);
 }
 
 #ifdef MY_PUTSTR

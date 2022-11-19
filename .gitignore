@@ -1,4 +1,4 @@
-my_*
-!*.c
 *~
 *.exe
+build
+.idea

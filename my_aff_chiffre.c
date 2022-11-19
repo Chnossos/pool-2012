@@ -10,9 +10,14 @@
 ** The function shall return the number of characters printed out.
 ** ****************************************************************************/
 
-#include <unistd.h>
+#ifdef _WIN32
+# include <io.h>
+#else
+# include <unistd.h>
+#endif
 
 int	my_aff_chiffre(void);
+int	my_aff_chiffre_smart(void);
 
 int	my_aff_chiffre()
 {
@@ -25,8 +30,6 @@ int	my_aff_chiffre()
     l += write(1, &c, 1);
   return (l);
 }
-
-int	my_aff_chiffre_smart(void);
 
 int	my_aff_chiffre_smart()
 {

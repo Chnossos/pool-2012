@@ -15,7 +15,11 @@
 ** The function shall return the number of characters printed out.
 ** ****************************************************************************/
 
-#include <unistd.h>
+#ifdef _WIN32
+# include <io.h>
+#else
+# include <unistd.h>
+#endif
 
 int my_aff_comb(void);
 

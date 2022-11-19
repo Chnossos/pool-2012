@@ -20,7 +20,16 @@
 
 #include <errno.h>
 #include <fcntl.h>
-#include <unistd.h>
+
+#ifdef _WIN32
+# include <basetsd.h>
+# include <io.h>
+# define WRITE_SIZE unsigned int
+# define ssize_t    SSIZE_T
+#else
+# include <unistd.h>
+# WRITE_SIZE size_t
+#endif
 
 static void	cat(int fd)
 {
@@ -28,7 +37,7 @@ static void	cat(int fd)
   char		buffer[30720];
 
   while ((size = read(fd, buffer, 30720)) > 0)
-    write(1, buffer, (size_t)size);
+    write(1, buffer, (WRITE_SIZE)size);
   if (size < 0)
   {
     if (errno == EACCES)

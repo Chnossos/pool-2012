@@ -1,4 +1,8 @@
-#include <unistd.h>
+#ifdef _WIN32
+# include <io.h>
+#else
+# include <unistd.h>
+#endif
 
 int	my_putchar(int c);
 

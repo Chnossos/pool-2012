@@ -11,12 +11,22 @@ int	my_strcmp(char *s1, char *s2);
 
 int	my_strcmp(char *s1, char *s2)
 {
+#ifdef _WIN32
+  int	distance;
+
+  distance = 0;
+#endif
   while (*s1 && *s2 && *s1 == *s2)
   {
     ++s1;
     ++s2;
   }
+#ifdef _WIN32
+  distance = *s1 - *s2;
+  return distance < 0 ? -1 : distance > 0 ? 1 : 0;
+#else
   return (*s1 - *s2);
+#endif
 }
 
 #ifdef MY_STRCMP

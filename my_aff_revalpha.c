@@ -10,9 +10,14 @@
 ** The function shall return the number of characters printed out.
 ** ****************************************************************************/
 
-#include <unistd.h>
+#ifdef _WIN32
+# include <io.h>
+#else
+# include <unistd.h>
+#endif
 
 int	my_aff_revalpha(void);
+int	my_aff_revalpha_smart(void);
 
 int	my_aff_revalpha()
 {
@@ -25,8 +30,6 @@ int	my_aff_revalpha()
     l += write(1, &c, 1);
   return (l);
 }
-
-int	my_aff_revalpha_smart(void);
 
 int	my_aff_revalpha_smart()
 {
