@@ -10,12 +10,9 @@ function(add_my_executable SOURCE)
     if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
         target_compile_options(${TARGET} PRIVATE -ansi -pedantic-errors -Wall -Wextra -Werror)
     elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
-        target_compile_options(${TARGET}
-            PRIVATE
-                -Weverything
-                $<IF:$<STREQUAL:${CMAKE_C_SIMULATE_ID},MSVC>,-Wno-deprecated-declarations
-                                                            ,-ansi -pedantic-errors>
-        )
+        target_compile_options(${TARGET} PRIVATE -Weverything
+            $<IF:$<STREQUAL:${CMAKE_C_SIMULATE_ID},MSVC>,-Wno-deprecated-declarations
+                                                        ,-ansi -pedantic-errors>)
     elseif("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
         target_compile_options(${TARGET}
             PRIVATE
@@ -32,3 +29,11 @@ file(GLOB SOURCES *.c)
 foreach(SRC ${SOURCES})
     add_my_executable(${SRC})
 endforeach()
+
+if(WIN32)
+    set(CMD "$f1 = cat cat.c; $f2 = $<TARGET_FILE:cat> cat.c; exit (\"$f1\" -ne \"$f2\")")
+    add_test(NAME cat COMMAND powershell -Command "${CMD}" WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+else()
+    set(CMD "[ \"$(cat cat.c)\" == \"$($<TARGET_FILE:cat> cat.c)\" ]")
+    add_test(NAME cat COMMAND sh -c "${CMD}" WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+endif()
